@@ -51,21 +51,21 @@ namespace CarMarketplace.Controllers
 
         // POST: api/store
         [HttpPost]
-        public async Task<ActionResult<StoreDto>> PostStore(StoreDto storeDto)
+        public async Task<ActionResult<StoreDto>> PostStore(CreateStoreDto createStoreDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (storeDto == null)
+            if (createStoreDto == null)
             {
                 return BadRequest("Store data cannot be null.");
             }
 
-            var store = storeDto.ToStore(); 
+            var store = StoreMappers.ToStoreFromCreate(createStoreDto); 
 
             if (store == null)
             {
-                return BadRequest("Failed to map StoreDto to Store.");
+                return BadRequest("Failed to map CreateStoreDto to Store.");
             }
 
             await _storeRepository.AddStore(store); 
@@ -75,31 +75,27 @@ namespace CarMarketplace.Controllers
 
         // PUT: api/store/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStore(int id, StoreDto  storeDto)
+        public async Task<IActionResult> PutStore(int id, UpdateStoreDto  updateStoreDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (storeDto == null)
+            if (updateStoreDto == null)
             {
                 return BadRequest("Store data cannot be null.");
             }
 
-            if (id != storeDto.Id)
+            var existingStore = await _storeRepository.GetStoreById(id);
+
+            if (existingStore == null)
             {
-                return BadRequest("Store ID mismatch.");
+                return NotFound($"Store with id {id} not found.");
             }
+            StoreMappers.ToStoreFromUpdate(existingStore, updateStoreDto); 
 
-            var store = storeDto.ToStore(); 
+            await _storeRepository.UpdateStore(existingStore); 
 
-            if (store == null)
-            {
-                return BadRequest("Store could not be mapped.");
-            }
-
-            await _storeRepository.UpdateStore(store); 
-
-            return NoContent();
+            return Ok(existingStore);
         }
 
         // DELETE: api/store/{id}

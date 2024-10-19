@@ -36,24 +36,23 @@ namespace CarMarketplace.Mappers
         }
 
         //Create Store (Post)
-        public static Store ToStoreFromCreate(this Store store) 
+        public static Store ToStoreFromCreate(this CreateStoreDto createStoreDto) 
         {
             return new Store
             {
-                Name = store.Name,
-                Address = store.Address,
-                PhoneNumber = store.PhoneNumber
+                Name = createStoreDto.Name,
+                Address = createStoreDto.Address,
+                PhoneNumber = createStoreDto.PhoneNumber
             };
         }
 
         //Update Store (Post)
-        public static Store ToStoreFromUpdate(this Store store)
+        public static void ToStoreFromUpdate(Store store, UpdateStoreDto updateStoreDto)
         {
-            return new Store
             {
-                Name = store.Name,
-                Address = store.Address,
-                PhoneNumber = store.PhoneNumber
+                store.Name = updateStoreDto.Name;
+                store.Address = updateStoreDto.Address;
+                store.PhoneNumber = updateStoreDto.PhoneNumber;
             };
         }
     }
