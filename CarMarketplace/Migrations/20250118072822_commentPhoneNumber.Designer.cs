@@ -4,6 +4,7 @@ using CarMarketplace.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarMarketplace.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118072822_commentPhoneNumber")]
+    partial class commentPhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,8 +98,7 @@ namespace CarMarketplace.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ImageUrls")
-                        .IsRequired()
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
@@ -182,13 +184,13 @@ namespace CarMarketplace.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cea8ae0b-eda5-4de5-a209-afb959a46aa9",
+                            Id = "32dd1d2e-34ea-41c3-828a-3f9e2f7c01ce",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "18d2ac5e-f3ac-4e02-b1c0-4d562951f03c",
+                            Id = "e0d71dd2-22b1-49a1-92f7-00ff744884f4",
                             Name = "User",
                             NormalizedName = "USER"
                         });

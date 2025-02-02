@@ -4,6 +4,7 @@ using CarMarketplace.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarMarketplace.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115111539_Car_cloudinary")]
+    partial class Car_cloudinary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,8 +98,7 @@ namespace CarMarketplace.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ImageUrls")
-                        .IsRequired()
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
@@ -146,7 +148,8 @@ namespace CarMarketplace.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -182,13 +185,13 @@ namespace CarMarketplace.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cea8ae0b-eda5-4de5-a209-afb959a46aa9",
+                            Id = "c21da3cd-247f-4590-a98d-2dac6decf16c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "18d2ac5e-f3ac-4e02-b1c0-4d562951f03c",
+                            Id = "3da793d2-53e8-4b4d-b8b8-1754d9c3295b",
                             Name = "User",
                             NormalizedName = "USER"
                         });

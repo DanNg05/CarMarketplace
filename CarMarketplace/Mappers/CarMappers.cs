@@ -18,7 +18,8 @@ namespace CarMarketplace.Mappers
                 Model = car.Model,
                 Odometer = car.Odometer,
                 Price = car.Price,
-                StoreId = car.StoreId
+                StoreId = car.StoreId,
+                ImageUrls = car.ImageUrls
             };
         }
 
@@ -34,7 +35,8 @@ namespace CarMarketplace.Mappers
                 Model = carDto.Model,
                 Odometer = carDto.Odometer,
                 Price = carDto.Price,
-                StoreId = carDto.StoreId
+                StoreId = carDto.StoreId,
+                ImageUrls = carDto.ImageUrls
             };
         }
 
@@ -47,20 +49,21 @@ namespace CarMarketplace.Mappers
                 Model = createCarDto.Model,
                 Odometer = createCarDto.Odometer,
                 Price = createCarDto.Price,
-                StoreId = storeId
+                StoreId = storeId,
+                ImageUrls = createCarDto.ImageUrls
             };
         }
 
         //Update Car (PUT)
-        public static Car ToCarFromUpdate(UpdateCarDto updateCarDto)
+        public static void ToCarFromUpdate(Car car, UpdateCarDto updateCarDto)
         {
-            return new Car
-            {
-                Make = updateCarDto.Make,
-                Model = updateCarDto.Model,
-                Odometer = updateCarDto.Odometer,
-                Price = updateCarDto.Price
-            };
+
+            car.Make = updateCarDto.Make;
+            car.Model = updateCarDto.Model;
+            car.Odometer = updateCarDto.Odometer;
+            car.Price = updateCarDto.Price;
+            car.ImageUrls = updateCarDto.ImageUrls;
+         
         }
     }
 }

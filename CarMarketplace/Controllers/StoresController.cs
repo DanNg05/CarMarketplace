@@ -6,20 +6,23 @@ using CarMarketplace.Helpers;
 using CarMarketplace.Mappers;
 using CarMarketplace.Models;
 using CarMarketplace.Repositories;
+using CarMarketplace.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarMarketplace.Controllers
 {
-    [Route("api/store")]
+    [Route("api/stores")]
     [ApiController]
     public class StoresController : Controller
     {
 
         private readonly IStoreRepository _storeRepository;
-        public StoresController(IStoreRepository storeRepository)
+        private readonly ImageService _imageService;
+        public StoresController(IStoreRepository storeRepository, ImageService imageService)
         {
             _storeRepository = storeRepository;
+            _imageService = imageService;
         }
 
         // GET: api/stores
@@ -51,7 +54,9 @@ namespace CarMarketplace.Controllers
 
         // POST: api/store
         [HttpPost]
-        public async Task<ActionResult<StoreDto>> PostStore(CreateStoreDto createStoreDto)
+
+        public async Task<ActionResult<StoreDto>> PostStore([FromForm] CreateStoreDto createStoreDto, IFormFile image)
+
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -61,12 +66,21 @@ namespace CarMarketplace.Controllers
                 return BadRequest("Store data cannot be null.");
             }
 
-            var store = StoreMappers.ToStoreFromCreate(createStoreDto); 
 
-            if (store == null)
+            string imageUrl = string.Empty;
+
+            // Upload image to Cloudinary if an image file is provided
+            if (image != null)
             {
-                return BadRequest("Failed to map CreateStoreDto to Store.");
+                imageUrl = await _imageService.UploadImageAsync(image);
+                if (string.IsNullOrEmpty(imageUrl))
+                {
+                    return BadRequest("Failed to upload image.");
+                }
             }
+
+            var store = StoreMappers.ToStoreFromCreate(createStoreDto);
+            store.ImageUrl = imageUrl;
 
             await _storeRepository.AddStore(store); 
 
@@ -75,7 +89,9 @@ namespace CarMarketplace.Controllers
 
         // PUT: api/store/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStore(int id, UpdateStoreDto  updateStoreDto)
+
+        public async Task<IActionResult> PutStore(int id, [FromForm] UpdateStoreDto  updateStoreDto, IFormFile? image)
+
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -86,14 +102,27 @@ namespace CarMarketplace.Controllers
             }
 
             var existingStore = await _storeRepository.GetStoreById(id);
-
             if (existingStore == null)
             {
-                return NotFound($"Store with id {id} not found.");
+                return NotFound("Store not found.");
             }
-            StoreMappers.ToStoreFromUpdate(existingStore, updateStoreDto); 
 
-            await _storeRepository.UpdateStore(existingStore); 
+            string imageUrl = existingStore.ImageUrl; // Retain the existing image URL if no new file is uploaded
+
+            // Upload new image to Cloudinary if an image file is provided
+            if (image != null)
+            {
+                imageUrl = await _imageService.UploadImageAsync(image);
+                if (string.IsNullOrEmpty(imageUrl))
+                {
+                    return BadRequest("Failed to upload image.");
+                }
+            }
+            StoreMappers.ToStoreFromUpdate(existingStore, updateStoreDto);
+            existingStore.ImageUrl = imageUrl;
+            
+            await _storeRepository.UpdateStore(existingStore);
+
 
             return Ok(existingStore);
         }

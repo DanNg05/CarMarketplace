@@ -17,12 +17,13 @@ namespace CarMarketplace.Mappers
                 Name = store.Name,
                 Address = store.Address,
                 PhoneNumber = store.PhoneNumber,
+                ImageUrl = store.ImageUrl,
                 Cars = store.Cars.Select(c => c.ToCarDto()).ToList()
             };
         }
 
         // Converts a StoreDto back to a Store model
-        public static Store? ToStore(this StoreDto storeDto)
+        public static Store? ToStore(this StoreDto storeDto, string? imageUrl = null)
         {
             if (storeDto == null) return null;
 
@@ -31,7 +32,8 @@ namespace CarMarketplace.Mappers
                 Id = storeDto.Id,
                 Name = storeDto.Name,
                 Address = storeDto.Address,
-                PhoneNumber = storeDto.PhoneNumber
+                PhoneNumber = storeDto.PhoneNumber,
+                ImageUrl = imageUrl ?? storeDto.ImageUrl
             };
         }
 
@@ -42,18 +44,19 @@ namespace CarMarketplace.Mappers
             {
                 Name = createStoreDto.Name,
                 Address = createStoreDto.Address,
-                PhoneNumber = createStoreDto.PhoneNumber
+                PhoneNumber = createStoreDto.PhoneNumber,
+                ImageUrl = createStoreDto.ImageUrl
             };
         }
 
-        //Update Store (Post)
+        //Update Store (Put)
         public static void ToStoreFromUpdate(Store store, UpdateStoreDto updateStoreDto)
         {
-            {
-                store.Name = updateStoreDto.Name;
-                store.Address = updateStoreDto.Address;
-                store.PhoneNumber = updateStoreDto.PhoneNumber;
-            };
+            store.Name = updateStoreDto.Name;
+            store.Address = updateStoreDto.Address;
+            store.PhoneNumber = updateStoreDto.PhoneNumber;
+            store.ImageUrl = updateStoreDto.ImageUrl;
+
         }
     }
 }

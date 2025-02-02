@@ -1,9 +1,12 @@
 using CarMarketplace.Data;
 using CarMarketplace.Models;
 using CarMarketplace.Repositories;
+using CarMarketplace.Services;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,31 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Timeout 
+builder.WebHost.UseShutdownTimeout(TimeSpan.FromMinutes(60));
+
+
+//Register ImageService with Cloudinary
+builder.Services.AddScoped<ImageService>();
+
+
+//Cloudinary Service
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddSingleton(provider =>
+{
+    var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+    return new Cloudinary(new Account(config.CloudName, config.ApiKey, config.ApiSecret));
+});
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+        policy.WithOrigins("http://localhost:3000") // Allow requests from React app
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
     );
@@ -67,6 +95,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAuthorization();
+
+// Use CORS
+app.UseCors("AllowReactApp");
 
 app.MapControllers();
 
