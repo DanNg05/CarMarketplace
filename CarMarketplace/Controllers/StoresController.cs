@@ -54,7 +54,9 @@ namespace CarMarketplace.Controllers
 
         // POST: api/store
         [HttpPost]
+
         public async Task<ActionResult<StoreDto>> PostStore([FromForm] CreateStoreDto createStoreDto, IFormFile image)
+
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -63,6 +65,7 @@ namespace CarMarketplace.Controllers
             {
                 return BadRequest("Store data cannot be null.");
             }
+
 
             string imageUrl = string.Empty;
 
@@ -86,7 +89,9 @@ namespace CarMarketplace.Controllers
 
         // PUT: api/store/{id}
         [HttpPut("{id}")]
+
         public async Task<IActionResult> PutStore(int id, [FromForm] UpdateStoreDto  updateStoreDto, IFormFile? image)
+
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -95,7 +100,6 @@ namespace CarMarketplace.Controllers
             {
                 return BadRequest("Store data cannot be null.");
             }
-
 
             var existingStore = await _storeRepository.GetStoreById(id);
             if (existingStore == null)
@@ -119,7 +123,8 @@ namespace CarMarketplace.Controllers
             
             await _storeRepository.UpdateStore(existingStore);
 
-            return NoContent();
+
+            return Ok(existingStore);
         }
 
         // DELETE: api/store/{id}

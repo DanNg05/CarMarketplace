@@ -56,6 +56,7 @@ namespace CarMarketplace.Mappers
             store.Address = updateStoreDto.Address;
             store.PhoneNumber = updateStoreDto.PhoneNumber;
             store.ImageUrl = updateStoreDto.ImageUrl;
+
         }
     }
 }

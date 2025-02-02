@@ -1,6 +1,8 @@
+
 ﻿using CarMarketplace.DTOs.Car;
 
 namespace CarMarketplace.DTOs.Store
+
 {
     public class CreateStoreDto
     {

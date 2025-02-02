@@ -1,6 +1,8 @@
+
 ﻿using CarMarketplace.DTOs.Car;
 
 namespace CarMarketplace.DTOs.Store
+
 {
     public class UpdateStoreDto
     {
@@ -10,5 +12,6 @@ namespace CarMarketplace.DTOs.Store
         //public IFormFile? ImageFile { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public List<CarDto> Cars { get; set; } = new List<CarDto>();
+
     }
 }
