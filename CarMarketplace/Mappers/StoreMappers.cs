@@ -17,12 +17,13 @@ namespace CarMarketplace.Mappers
                 Name = store.Name,
                 Address = store.Address,
                 PhoneNumber = store.PhoneNumber,
+                ImageUrl = store.ImageUrl,
                 Cars = store.Cars.Select(c => c.ToCarDto()).ToList()
             };
         }
 
         // Converts a StoreDto back to a Store model
-        public static Store? ToStore(this StoreDto storeDto)
+        public static Store? ToStore(this StoreDto storeDto, string? imageUrl = null)
         {
             if (storeDto == null) return null;
 
@@ -31,30 +32,30 @@ namespace CarMarketplace.Mappers
                 Id = storeDto.Id,
                 Name = storeDto.Name,
                 Address = storeDto.Address,
-                PhoneNumber = storeDto.PhoneNumber
+                PhoneNumber = storeDto.PhoneNumber,
+                ImageUrl = imageUrl ?? storeDto.ImageUrl
             };
         }
 
         //Create Store (Post)
-        public static Store ToStoreFromCreate(this Store store) 
+        public static Store ToStoreFromCreate(this CreateStoreDto createStoreDto) 
         {
             return new Store
             {
-                Name = store.Name,
-                Address = store.Address,
-                PhoneNumber = store.PhoneNumber
+                Name = createStoreDto.Name,
+                Address = createStoreDto.Address,
+                PhoneNumber = createStoreDto.PhoneNumber,
+                ImageUrl = createStoreDto.ImageUrl
             };
         }
 
-        //Update Store (Post)
-        public static Store ToStoreFromUpdate(this Store store)
+        //Update Store (Put)
+        public static void ToStoreFromUpdate(Store store, UpdateStoreDto updateStoreDto)
         {
-            return new Store
-            {
-                Name = store.Name,
-                Address = store.Address,
-                PhoneNumber = store.PhoneNumber
-            };
+            store.Name = updateStoreDto.Name;
+            store.Address = updateStoreDto.Address;
+            store.PhoneNumber = updateStoreDto.PhoneNumber;
+            store.ImageUrl = updateStoreDto.ImageUrl;
         }
     }
 }

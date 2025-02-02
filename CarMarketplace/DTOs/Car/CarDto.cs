@@ -10,5 +10,6 @@ namespace CarMarketplace.DTOs.Car
         public string Odometer { get; set; } = string.Empty;
         public int Price { get; set; }
         public int? StoreId { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

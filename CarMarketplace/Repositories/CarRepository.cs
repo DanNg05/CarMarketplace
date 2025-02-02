@@ -1,4 +1,5 @@
 ﻿using CarMarketplace.Data;
+using CarMarketplace.Helpers;
 using CarMarketplace.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,22 @@ namespace CarMarketplace.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Car>> GetAllCars()
+        public async Task<IEnumerable<Car>> GetAllCars(CarQueryObject carQuery)
         {
-            return await _context.Cars.ToListAsync();
+            var cars = _context.Cars.Include(c => c.Store).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(carQuery.Model))
+            {
+                cars = cars.Where(s => s.Model.Contains(carQuery.Model));
+            }
+            if (!string.IsNullOrWhiteSpace(carQuery.SortBy))
+            {
+                if (carQuery.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                {
+                    cars = carQuery.IsDescending ? cars.OrderByDescending(s => s.Price) : cars.OrderBy(s => s.Price);
+
+                }
+            }
+            return await cars.ToListAsync();
         }
         public async Task<Car?> GetCarById(int carId)
         {

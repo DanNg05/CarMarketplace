@@ -11,9 +11,11 @@ namespace CarMarketplace.Models
         [Required]
         public string Address { get; set; } = string.Empty;
         [Required]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Phone number must contain numbers only.")]
-        [StringLength(10, ErrorMessage = "Phone number must be 10 digits long.", MinimumLength = 10)]
+        //[RegularExpression(@"^\d+$", ErrorMessage = "Phone number must contain numbers only.")]
+        //[StringLength(10, ErrorMessage = "Phone number must be 10 digits long.", MinimumLength = 10)]
         public string PhoneNumber { get; set; } = string.Empty;
+        [Required]
+        public string ImageUrl { get; set; } = string.Empty;
         public List<Car> Cars { get; set; } = new List<Car>();
     }
 }

@@ -6,5 +6,6 @@
         public string Model { get; set; } = string.Empty;
         public string Odometer { get; set; } = string.Empty;
         public int Price { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

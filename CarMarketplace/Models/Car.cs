@@ -17,5 +17,7 @@ namespace CarMarketplace.Models
         public int Price { get; set; }
         public int? StoreId { get; set; }
         public Store? Store { get; set; }
+        //testing cloudinary
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }
