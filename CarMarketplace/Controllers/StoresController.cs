@@ -7,6 +7,7 @@ using CarMarketplace.Mappers;
 using CarMarketplace.Models;
 using CarMarketplace.Repositories;
 using CarMarketplace.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ namespace CarMarketplace.Controllers
 
         // GET: api/stores
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<StoreDto>>> GetStores([FromQuery] StoreQueryObject storeQuery)
         {
             if (!ModelState.IsValid)
